@@ -10,3 +10,7 @@ https://github.com/yotamitai/CS285_DRL
 
 strange implementation  
 https://github.com/erfanMhi/Deep-Reinforcement-Learning-CS285-Pytorch
+
+
+Tutorial  
+https://colab.research.google.com/drive/135fzWzVf4IULsr68RUoShV-ZDTzXKvbp?usp=sharing
