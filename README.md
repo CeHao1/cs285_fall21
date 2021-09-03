@@ -9,7 +9,8 @@ https://github.com/botkevin/cs285
 https://github.com/yotamitai/CS285_DRL   
 
 strange implementation  
-https://github.com/erfanMhi/Deep-Reinforcement-Learning-CS285-Pytorch
+https://github.com/erfanMhi/Deep-Reinforcement-Learning-CS285-Pytorch  
+https://github.com/cww97/cs285_fall2020_cww  
 
 
 Tutorial  
