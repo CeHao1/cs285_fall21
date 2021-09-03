@@ -88,6 +88,8 @@ class RL_Trainer(object):
         self.total_envsteps = 0
         self.start_time = time.time()
 
+        mean_list = []
+        std_list =  []
         for itr in range(n_iter):
             print("\n\n********** Iteration %i ************"%itr)
 
@@ -128,12 +130,20 @@ class RL_Trainer(object):
 
                 # perform logging
                 print('\nBeginning logging procedure...')
-                self.perform_logging(
+                mean, std = self.perform_logging(
                     itr, paths, eval_policy, train_video_paths, training_logs)
+
+                mean_list.append(mean)
+                std_list.append(std)
 
                 if self.params['save_params']:
                     print('\nSaving agent params')
                     self.agent.save('{}/policy_itr_{}.pt'.format(self.params['logdir'], itr))
+
+        print('mean : ', np.round(mean_list))
+        print('std  : ', np.round(std_list))
+
+        # self.perform_expert(expert_policy)
 
     ####################################
     ####################################
@@ -275,3 +285,16 @@ class RL_Trainer(object):
             print('Done logging...\n\n')
 
             self.logger.flush()
+
+            return np.mean(eval_returns), np.std(eval_returns)
+
+    def perform_expert(self, expert_policy):
+        print("\nCollecting data for EXPERT !! eval...")
+        eval_paths, eval_envsteps_this_batch = utils.sample_trajectories(self.env, expert_policy, self.params['eval_batch_size'], self.params['ep_len'])
+        eval_returns = [eval_path["reward"].sum() for eval_path in eval_paths]
+        mean_exp = np.mean(eval_returns)
+        std_exp = np.std(eval_returns)
+        mean_exp_max = np.max(eval_returns)
+        mean_exp_min = np.min(eval_returns)
+
+        print('mean exp: {}, std exp: {}, mean max: {}, mean min: {}'.format(np.round(mean_exp), np.round(std_exp), np.round(mean_exp_max), np.round(mean_exp_min) ))
