@@ -141,7 +141,7 @@ class PGAgent(BaseAgent):
         if self.standardize_advantages:
             ## TODO: standardize the advantages to have a mean of zero
             ## and a standard deviation of one
-            advantages = normalize (advantages, np.mean (advantages), np.std (advantages))
+            advantages = normalize(advantages, np.mean(advantages), np.std(advantages))
 
         return advantages
 
