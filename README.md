@@ -1,7 +1,7 @@
 Assignments for [Berkeley CS 285: Deep Reinforcement Learning, Decision Making, and Control](http://rail.eecs.berkeley.edu/deeprlcourse/).
 
 
-reference :  
+reference 2020:  
 https://github.com/cassidylaidlaw/cs285-homework  
 https://github.com/vincentkslim/cs285_homework_fall2020  
 https://github.com/nalepae/cs285  
@@ -11,6 +11,11 @@ https://github.com/yotamitai/CS285_DRL
 strange implementation  
 https://github.com/erfanMhi/Deep-Reinforcement-Learning-CS285-Pytorch  
 https://github.com/cww97/cs285_fall2020_cww  
+
+
+github 2019 :  
+https://github.com/zhixuan-lin/cs285-fall-2019  
+
 
 
 Tutorial  
