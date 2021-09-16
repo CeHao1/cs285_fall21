@@ -87,7 +87,13 @@ class MLPPolicy(BasePolicy, nn.Module, metaclass=abc.ABCMeta):
     # query the policy with observation(s) to get selected action(s)
     def get_action(self, obs: np.ndarray) -> np.ndarray:
         # TODO: get this from HW1
-        action = self.forward(ptu.from_numpy(observation))
+        if len(obs.shape) > 1:
+            observation = obs
+        else:
+            observation = obs[None]
+
+        action_distribution = self(ptu.from_numpy(observation))
+        action = action_distribution.sample()
         return  ptu.to_numpy(action)
 
     # update/train this policy
@@ -139,7 +145,7 @@ class MLPPolicyPG(MLPPolicy):
         # HINT4: use self.optimizer to optimize the loss. Remember to
             # 'zero_grad' first
 
-        TODO
+        # TODO
 
         if self.nn_baseline:
             ## TODO: update the neural network baseline using the q_values as
@@ -157,3 +163,16 @@ class MLPPolicyPG(MLPPolicy):
             'Training Loss': ptu.to_numpy(loss),
         }
         return train_log
+
+    def run_baseline_prediction(self, obs):
+        """
+            Helper function that converts `obs` to a tensor,
+            calls the forward method of the baseline MLP,
+            and returns a np array
+            Input: `obs`: np.ndarray of size [N, 1]
+            Output: np.ndarray of size [N]
+        """
+        obs = ptu.from_numpy(obs)
+        predictions = self.baseline(obs)
+        return ptu.to_numpy(predictions)[:, 0]
+
