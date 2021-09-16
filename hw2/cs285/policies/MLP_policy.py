@@ -174,5 +174,6 @@ class MLPPolicyPG(MLPPolicy):
         """
         obs = ptu.from_numpy(obs)
         predictions = self.baseline(obs)
-        return ptu.to_numpy(predictions)[:, 0]
+        # return ptu.to_numpy(predictions)[:, 0]
+        return ptu.to_numpy(predictions)
 
