@@ -3,6 +3,7 @@ import numpy as np
 from .base_agent import BaseAgent
 from cs285.policies.MLP_policy import MLPPolicyPG
 from cs285.infrastructure.replay_buffer import ReplayBuffer
+from cs285.infrastructure.utils import normalize
 
 
 class PGAgent(BaseAgent):
@@ -100,7 +101,8 @@ class PGAgent(BaseAgent):
             ## TODO: values were trained with standardized q_values, so ensure
                 ## that the predictions have the same mean and standard deviation as
                 ## the current batch of q_values
-            values = ( values_unnormalized - np.mean(values_unnormalized) ) / np.std(values_unnormalized) * np.std(q_values) + np.mean(q_values)
+            # values = ( values_unnormalized - np.mean(values_unnormalized) ) / np.std(values_unnormalized) * np.std(q_values) + np.mean(q_values)
+            values = values_unnormalized * np.std(q_values) + np.mean(q_values)
 
             if self.gae_lambda is not None:
                 ## append a dummy T+1 value for simpler recursive calculation
@@ -115,6 +117,7 @@ class PGAgent(BaseAgent):
                 advantages = np.zeros(batch_size + 1)
 
                 for i in reversed(range(batch_size)):
+                    pass
                     ## TODO: recursively compute advantage estimates starting from
                         ## timestep T.
                     ## HINT 1: use terminals to handle edge cases. terminals[i]
@@ -138,7 +141,7 @@ class PGAgent(BaseAgent):
         if self.standardize_advantages:
             ## TODO: standardize the advantages to have a mean of zero
             ## and a standard deviation of one
-            advantages = TODO
+            advantages = normalize (advantages, np.mean (advantages), np.std (advantages))
 
         return advantages
 
