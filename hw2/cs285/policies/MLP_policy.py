@@ -87,6 +87,8 @@ class MLPPolicy(BasePolicy, nn.Module, metaclass=abc.ABCMeta):
     # query the policy with observation(s) to get selected action(s)
     def get_action(self, obs: np.ndarray) -> np.ndarray:
         # TODO: get this from HW1
+        action = self.forward(ptu.from_numpy(observation))
+        return  ptu.to_numpy(action)
 
     # update/train this policy
     def update(self, observations, actions, **kwargs):
