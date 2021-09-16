@@ -70,13 +70,14 @@ class PGAgent(BaseAgent):
             # dimension corresponds to trajectories and the second corresponds
             # to timesteps
 
+        q_values = []
         if not self.reward_to_go:
-            TODO
+            q_values = [self._discounted_return(rewards) for rewards in rewards_list]
 
         # Case 2: reward-to-go PG
         # Estimate Q^{pi}(s_t, a_t) by the discounted sum of rewards starting from t
         else:
-            TODO
+            q_values = [self._discounted_cumsum(rewards) for rewards in rewards_list]
 
         return q_values
 
@@ -159,9 +160,9 @@ class PGAgent(BaseAgent):
 
             Output: list where each index t contains sum_{t'=0}^T gamma^t' r_{t'}
         """
-
-        # TODO: create list_of_discounted_returns
-
+        
+        gam_t_r = [self.gamma**t * r for t, r in enumerate(rewards)]
+        list_of_discounted_returns = [sum(gam_t_r)] * len(rewards)
         return list_of_discounted_returns
 
     def _discounted_cumsum(self, rewards):
@@ -174,5 +175,10 @@ class PGAgent(BaseAgent):
         # TODO: create `list_of_discounted_returns`
         # HINT: it is possible to write a vectorized solution, but a solution
             # using a for loop is also fine
+        list_of_discounted_cumsums = []
+        T = len(rewards)
+        for t in range(T):
+            cumsum = [self.gamma ** (tp-t) * rewards[tp] for tp in range(t, T)]
+            list_of_discounted_cumsums.append(sum(cumsum))
 
         return list_of_discounted_cumsums
