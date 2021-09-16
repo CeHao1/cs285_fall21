@@ -178,7 +178,7 @@ class PGAgent(BaseAgent):
         list_of_discounted_cumsums = []
         T = len(rewards)
         for t in range(T):
-            cumsum = [self.gamma ** (tp-t) * rewards[tp] for tp in range(t, T)]
-            list_of_discounted_cumsums.append(sum(cumsum))
+            cum = [self.gamma ** (tp-t) * rewards[tp] for tp in range(t, T)]
+            list_of_discounted_cumsums.append(sum(cum))
 
         return list_of_discounted_cumsums
