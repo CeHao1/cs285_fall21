@@ -266,9 +266,9 @@ class RL_Trainer(object):
             logs["Initial_DataCollection_AverageReturn"] = self.initial_return
 
             # perform the logging
-            for key, value in logs.items():
-                print('{} : {}'.format(key, value))
-                self.logger.log_scalar(value, key, itr)
-            print('Done logging...\n\n')
+            # for key, value in logs.items():
+            #     print('{} : {}'.format(key, value))
+            #     self.logger.log_scalar(value, key, itr)
+            # print('Done logging...\n\n')
 
             self.logger.flush()
