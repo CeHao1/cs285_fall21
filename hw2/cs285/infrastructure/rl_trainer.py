@@ -114,7 +114,7 @@ class RL_Trainer(object):
         self.reward_store = []
 
         for itr in range(n_iter):
-            if iter%10 == 0:
+            if itr%10 == 0:
                 print("\n\n********** Iteration %i ************"%itr)
 
             # decide if videos should be rendered/logged at this iteration
@@ -154,7 +154,7 @@ class RL_Trainer(object):
                 if self.params['save_params']:
                     self.agent.save('{}/agent_itr_{}.pt'.format(self.params['logdir'], itr))
 
-            if iter%10 == 0:
+            if itr%10 == 0:
                 print('reward is, ', self.reward_store[-1])
 
         print('reward store, ', self.reward_store)
