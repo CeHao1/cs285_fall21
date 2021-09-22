@@ -259,7 +259,7 @@ class RL_Trainer(object):
             logs["TimeSinceStart"] = time.time() - self.start_time
             logs.update(last_log)
 
-            self.reward_store.append(np.round*logs["Eval_AverageReturn"],2))
+            self.reward_store.append(np.round(logs["Eval_AverageReturn"],2))
 
             if itr == 0:
                 self.initial_return = np.mean(train_returns)
