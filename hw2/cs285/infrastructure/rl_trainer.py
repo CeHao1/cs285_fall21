@@ -177,10 +177,9 @@ class RL_Trainer(object):
             train_video_paths: paths which also contain videos for visualization purposes
         """
 
-        if itr == 0:
+        if itr == 0 and load_initial_expertdata is not None:
             with open(load_initial_expertdata, 'rb') as f:
-                loaded_paths = pickle.load(f)
-            return loaded_paths, 0, None
+                data = pickle.loads(f.read())
 
         print("\nCollecting data to be used for training...")
         paths, envsteps_this_batch = utils.sample_trajectories(self.env, collect_policy, batch_size, self.params['ep_len'])
