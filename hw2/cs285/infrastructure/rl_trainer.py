@@ -115,7 +115,7 @@ class RL_Trainer(object):
 
         for itr in range(n_iter):
             if itr%10 == 0:
-                print("\n\n********** Iteration %i ************"%itr)
+                print("\n********** Iteration %i ************"%itr)
 
             # decide if videos should be rendered/logged at this iteration
             if itr % self.params['video_log_freq'] == 0 and self.params['video_log_freq'] != -1:
