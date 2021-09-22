@@ -178,16 +178,17 @@ class MLPPolicyPG(MLPPolicy):
         }
         return train_log
 
-    def run_baseline_prediction(self, obs):
+    def run_baseline_prediction(self, observations):
         """
-            Helper function that converts `obs` to a tensor,
+            Helper function that converts `observations` to a tensor,
             calls the forward method of the baseline MLP,
             and returns a np array
-            Input: `obs`: np.ndarray of size [N, 1]
+
+            Input: `observations`: np.ndarray of size [N, 1]
             Output: np.ndarray of size [N]
+
         """
-        obs = ptu.from_numpy(obs)
-        predictions = self.baseline(obs)
-        # return ptu.to_numpy(predictions)[:, 0]
-        return ptu.to_numpy(predictions)
+        observations = ptu.from_numpy(observations)
+        pred = self.baseline(observations)
+        return ptu.to_numpy(pred.squeeze())
 
