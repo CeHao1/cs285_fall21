@@ -150,10 +150,10 @@ class RL_Trainer(object):
                 print('\nBeginning logging procedure...')
                 self.perform_logging(itr, paths, eval_policy, train_video_paths, train_logs)
 
-                print('reward store, ', self.reward_store)
-
                 if self.params['save_params']:
                     self.agent.save('{}/agent_itr_{}.pt'.format(self.params['logdir'], itr))
+
+        print('reward store, ', self.reward_store)
 
     ####################################
     ####################################

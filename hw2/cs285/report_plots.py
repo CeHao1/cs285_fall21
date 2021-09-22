@@ -6,6 +6,8 @@ import numpy as np
 import pandas as pd
 import os
 
+class results_store:
+    q1_sb_no_rtg_dsa = []
 
 def set_plot_env(iterations, rewards_dict, exp_name):
 
@@ -32,3 +34,5 @@ def plot_reward(ax, rewards, name, color):
     rewards = np.array(rewards)
     iterations = np.arange(rewards.shape[0])
     ax.plot(iterations, rewards, color=color, label=name)
+
+
