@@ -111,6 +111,7 @@ class RL_Trainer(object):
         # init vars at beginning of training
         self.total_envsteps = 0
         self.start_time = time.time()
+        self.reward_store = []
 
         for itr in range(n_iter):
             print("\n\n********** Iteration %i ************"%itr)
@@ -148,7 +149,8 @@ class RL_Trainer(object):
                 # perform logging
                 print('\nBeginning logging procedure...')
                 self.perform_logging(itr, paths, eval_policy, train_video_paths, train_logs)
-                print('logs:: ', train_logs)
+
+                print('reward store, ', self.reward_store)
 
                 if self.params['save_params']:
                     self.agent.save('{}/agent_itr_{}.pt'.format(self.params['logdir'], itr))
@@ -256,6 +258,8 @@ class RL_Trainer(object):
             logs["Train_EnvstepsSoFar"] = self.total_envsteps
             logs["TimeSinceStart"] = time.time() - self.start_time
             logs.update(last_log)
+
+            self.reward_store.append(logs["Eval_AverageReturn"])
 
             if itr == 0:
                 self.initial_return = np.mean(train_returns)
