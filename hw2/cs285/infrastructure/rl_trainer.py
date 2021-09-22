@@ -114,7 +114,8 @@ class RL_Trainer(object):
         self.reward_store = []
 
         for itr in range(n_iter):
-            print("\n\n********** Iteration %i ************"%itr)
+            if iter%10 == 0:
+                print("\n\n********** Iteration %i ************"%itr)
 
             # decide if videos should be rendered/logged at this iteration
             if itr % self.params['video_log_freq'] == 0 and self.params['video_log_freq'] != -1:
@@ -147,11 +148,14 @@ class RL_Trainer(object):
             # log/save
             if self.logvideo or self.logmetrics:
                 # perform logging
-                print('\nBeginning logging procedure...')
+                # print('\nBeginning logging procedure...')
                 self.perform_logging(itr, paths, eval_policy, train_video_paths, train_logs)
 
                 if self.params['save_params']:
                     self.agent.save('{}/agent_itr_{}.pt'.format(self.params['logdir'], itr))
+
+            if iter%10 == 0:
+                print('reward is, ', self.reward_store[-1])
 
         print('reward store, ', self.reward_store)
 
@@ -185,18 +189,18 @@ class RL_Trainer(object):
             with open(load_initial_expertdata, 'rb') as f:
                 data = pickle.loads(f.read())
 
-        print("\nCollecting data to be used for training...")
+        # print("\nCollecting data to be used for training...")
         paths, envsteps_this_batch = utils.sample_trajectories(self.env, collect_policy, batch_size, self.params['ep_len'])
 
         train_video_paths = None
         if self.log_video:
-            print('\nCollecting train rollouts to be used for saving videos...')
+            # print('\nCollecting train rollouts to be used for saving videos...')
             train_video_paths = utils.sample_n_trajectories(self.env, collect_policy, MAX_NVIDEO, MAX_VIDEO_LEN, True)
         return paths, envsteps_this_batch, train_video_paths
 
 
     def train_agent(self):
-        print('\nTraining agent using sampled data from replay buffer...')
+        # print('\nTraining agent using sampled data from replay buffer...')
         all_logs = []
         for train_step in range(self.params['num_agent_train_steps_per_iter']):
             ob_batch, ac_batch, re_batch, next_ob_batch, terminal_batch =  self.agent.sample(self.params['train_batch_size']) 
