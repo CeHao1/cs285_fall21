@@ -75,12 +75,12 @@ class PGAgent(BaseAgent):
         # ordering as observations, actions, etc.
 
         if not self.reward_to_go:
-            q_values = [self._discounted_return(rewards) for rewards in rewards_list]
+            q_values = np.concatenate([self._discounted_return(rewards) for rewards in rewards_list])
 
         # Case 2: reward-to-go PG
         # Estimate Q^{pi}(s_t, a_t) by the discounted sum of rewards starting from t
         else:
-            q_values = [self._discounted_cumsum(rewards) for rewards in rewards_list]
+            q_values = np.concatenate([self._discounted_cumsum(rewards) for rewards in rewards_list])
 
         return q_values
 
