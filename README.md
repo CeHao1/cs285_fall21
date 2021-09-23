@@ -20,3 +20,6 @@ https://github.com/zhixuan-lin/cs285-fall-2019
 
 Tutorial  
 https://colab.research.google.com/drive/135fzWzVf4IULsr68RUoShV-ZDTzXKvbp?usp=sharing
+
+auto click in colab  
+https://blog.csdn.net/bornfree5511/article/details/106980379  
