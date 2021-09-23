@@ -77,17 +77,17 @@ class PGAgent(BaseAgent):
 
         return q_values
 
-    def estimate_advantage(self, obs, q_values):
+    def estimate_advantage(self, obs, rews_list, q_values, terminals):
 
         """
-            Computes advantages by (possibly) subtracting a baseline from the estimated Q values
+            Computes advantages by (possibly) using GAE, or subtracting a baseline from the estimated Q values
         """
 
         # Estimate the advantage when nn_baseline is True,
-        # by querying the neural network that you're using to learn the baseline
+        # by querying the neural network that you're using to learn the value function
         if self.nn_baseline:
-            baselines_unnormalized = self.actor.run_baseline_prediction(obs)
-            ## ensure that the baseline and q_values have the same dimensionality
+            values_unnormalized = self.actor.run_baseline_prediction(obs)
+            ## ensure that the value predictions and q_values have the same dimensionality
             ## to prevent silent broadcasting errors
             assert values_unnormalized.ndim == q_values.ndim
             ## TODO: values were trained with standardized q_values, so ensure
@@ -139,6 +139,8 @@ class PGAgent(BaseAgent):
             ## TODO: standardize the advantages to have a mean of zero
             ## and a standard deviation of one
             advantages = normalize(advantages, np.mean(advantages), np.std(advantages))
+
+        return advantages
 
     #####################################################
 
