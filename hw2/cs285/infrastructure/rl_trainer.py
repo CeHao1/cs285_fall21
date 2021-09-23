@@ -165,7 +165,7 @@ class RL_Trainer(object):
         # HINT1: use sample_trajectories from utils
         # HINT2: you want each of these collected rollouts to be of length self.params['ep_len']
 
-        print("\nCollecting data to be used for training...")
+        # print("\nCollecting data to be used for training...")
         paths, envsteps_this_batch = utils.sample_trajectories(
             self.env, collect_policy, batch_size, self.params['ep_len'])
 
@@ -181,7 +181,7 @@ class RL_Trainer(object):
         return paths, envsteps_this_batch, train_video_paths
 
     def train_agent(self):
-        print('\nTraining agent using sampled data from replay buffer...')
+        # print('\nTraining agent using sampled data from replay buffer...')
         all_logs = []
         for train_step in range(self.params['num_agent_train_steps_per_iter']):
 
@@ -211,7 +211,7 @@ class RL_Trainer(object):
         #######################
 
         # collect eval trajectories, for logging
-        print("\nCollecting data for eval...")
+        # print("\nCollecting data for eval...")
         eval_paths, eval_envsteps_this_batch = utils.sample_trajectories(self.env, eval_policy, self.params['eval_batch_size'], self.params['ep_len'])
 
         # save eval rollouts as videos in tensorboard event file
