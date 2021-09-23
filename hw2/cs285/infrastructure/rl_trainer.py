@@ -13,6 +13,7 @@ from cs285.infrastructure import pytorch_util as ptu
 
 from cs285.infrastructure import utils
 from cs285.infrastructure.logger import Logger
+from cs285.infrastructure.action_noise_wrapper import ActionNoiseWrapper
 
 # how many rollouts to save as videos to tensorboard
 MAX_NVIDEO = 2
@@ -47,6 +48,10 @@ class RL_Trainer(object):
         # Make the gym environment
         self.env = gym.make(self.params['env_name'])
         self.env.seed(seed)
+
+        # Add noise wrapper
+        if params['action_noise_std'] > 0:
+            self.env = ActionNoiseWrapper(self.env, seed, params['action_noise_std'])
 
         # import plotting (locally if 'obstacles' env)
         if not(self.params['env_name']=='obstacles-cs285-v0'):
