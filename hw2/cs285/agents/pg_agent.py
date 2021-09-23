@@ -50,9 +50,6 @@ class PGAgent(BaseAgent):
         ## HINT: `train_log` should be returned by your actor update method
         train_log = self.actor.update (observations, actions, advantages, q_values=q_values)
 
-        q_values = self.calculate_q_vals(rewards_list)
-        advantages = self.estimate_advantage(observations, rewards_list, q_values, terminals)
-        train_log = self.actor.update(observations, actions, advantages, q_values)
 
         return train_log
 
@@ -141,7 +138,7 @@ class PGAgent(BaseAgent):
         if self.standardize_advantages:
             ## TODO: standardize the advantages to have a mean of zero
             ## and a standard deviation of one
-            advantages = normalize (advantages, np.mean (advantages), np.std (advantages))
+            advantages = normalize(advantages, np.mean(advantages), np.std(advantages))
 
     #####################################################
 
