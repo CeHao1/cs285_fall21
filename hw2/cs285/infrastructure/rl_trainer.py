@@ -8,6 +8,7 @@ import gym
 from gym import wrappers
 import numpy as np
 import torch
+import pickle
 from cs285.infrastructure import pytorch_util as ptu
 
 from cs285.infrastructure import utils
@@ -91,7 +92,8 @@ class RL_Trainer(object):
 
     def run_training_loop(self, n_iter, collect_policy, eval_policy,
                           initial_expertdata=None, relabel_with_expert=False,
-                          start_relabel_with_expert=1, expert_policy=None):
+                          start_relabel_with_expert=1, expert_policy=None,
+                          print_interval=1):
         """
         :param n_iter:  number of (dagger) iterations
         :param collect_policy:
@@ -105,9 +107,11 @@ class RL_Trainer(object):
         # init vars at beginning of training
         self.total_envsteps = 0
         self.start_time = time.time()
+        self.reward_store = []
 
         for itr in range(n_iter):
-            print("\n\n********** Iteration %i ************"%itr)
+            if itr%print_interval == 0:
+                print("\n********** Iteration %i ************"%itr)
 
             # decide if videos should be rendered/logged at this iteration
             if itr % self.params['video_log_freq'] == 0 and self.params['video_log_freq'] != -1:
@@ -140,11 +144,16 @@ class RL_Trainer(object):
             # log/save
             if self.logvideo or self.logmetrics:
                 # perform logging
-                print('\nBeginning logging procedure...')
+                # print('\nBeginning logging procedure...')
                 self.perform_logging(itr, paths, eval_policy, train_video_paths, train_logs)
 
                 if self.params['save_params']:
                     self.agent.save('{}/agent_itr_{}.pt'.format(self.params['logdir'], itr))
+
+            if itr%print_interval == 0:
+                print('reward is, ', self.reward_store[-1])
+
+        print('reward store, ', self.reward_store)
 
     ####################################
     ####################################
@@ -207,7 +216,7 @@ class RL_Trainer(object):
         #######################
 
         # collect eval trajectories, for logging
-        print("\nCollecting data for eval...")
+        # print("\nCollecting data for eval...")
         eval_paths, eval_envsteps_this_batch = utils.sample_trajectories(self.env, eval_policy, self.params['eval_batch_size'], self.params['ep_len'])
 
         # save eval rollouts as videos in tensorboard event file
@@ -252,15 +261,16 @@ class RL_Trainer(object):
             logs["TimeSinceStart"] = time.time() - self.start_time
             logs.update(last_log)
 
+            self.reward_store.append(np.round(logs["Eval_AverageReturn"],2))
+
             if itr == 0:
                 self.initial_return = np.mean(train_returns)
             logs["Initial_DataCollection_AverageReturn"] = self.initial_return
 
-            # perform the logging
-            for key, value in logs.items():
-                print('{} : {}'.format(key, value))
-                self.logger.log_scalar(value, key, itr)
-            print('Done logging...\n\n')
+            # for key, value in logs.items():
+            #     print('{} : {}'.format(key, value))
+            #     self.logger.log_scalar(value, key, itr)
+            # print('Done logging...\n\n')
 
             self.logger.flush()
 

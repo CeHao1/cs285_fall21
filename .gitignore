@@ -4,3 +4,5 @@ data/
 *~
 *.svg
 *.png
+
+*.ipynb

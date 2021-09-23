@@ -11,6 +11,7 @@ from torch import distributions
 from cs285.infrastructure import pytorch_util as ptu
 from cs285.infrastructure import utils
 from cs285.policies.base_policy import BasePolicy
+from cs285.infrastructure.utils import normalize
 
 
 class MLPPolicy(BasePolicy, nn.Module, metaclass=abc.ABCMeta):
