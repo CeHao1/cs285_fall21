@@ -63,31 +63,16 @@ class PGAgent(BaseAgent):
 
         # Case 1: trajectory-based PG
         # Estimate Q^{pi}(s_t, a_t) by the total discounted reward summed over entire trajectory
-<<<<<<< HEAD
         # HINT3: q_values should be a 1D numpy array where the indices correspond to the same
         # ordering as observations, actions, etc.
 
         if not self.reward_to_go:
             q_values = np.concatenate([self._discounted_return(rewards) for rewards in rewards_list])
-=======
-        if not self.reward_to_go:
-
-            # For each point (s_t, a_t), associate its value as being the discounted sum of rewards over the full trajectory
-            # In other words: value of (s_t, a_t) = sum_{t'=0}^T gamma^t' r_{t'}
-            q_values = np.concatenate([self._discounted_return(r) for r in rewards_list])
->>>>>>> others
 
         # Case 2: reward-to-go PG
         # Estimate Q^{pi}(s_t, a_t) by the discounted sum of rewards starting from t
         else:
-<<<<<<< HEAD
             q_values = np.concatenate([self._discounted_cumsum(rewards) for rewards in rewards_list])
-=======
-
-            # For each point (s_t, a_t), associate its value as being the discounted sum of rewards over the full trajectory
-            # In other words: value of (s_t, a_t) = sum_{t'=t}^T gamma^(t'-t) * r_{t'}
-            q_values = np.concatenate([self._discounted_cumsum(r) for r in rewards_list])
->>>>>>> others
 
         return q_values
 
@@ -161,12 +146,7 @@ class PGAgent(BaseAgent):
         if self.standardize_advantages:
             ## TODO: standardize the advantages to have a mean of zero
             ## and a standard deviation of one
-<<<<<<< HEAD
             advantages = normalize(advantages, np.mean(advantages), np.std(advantages))
-=======
-            ## HINT: there is a `normalize` function in `infrastructure.utils`
-            advantages = normalize (advantages, np.mean (advantages), np.std (advantages))
->>>>>>> others
 
         return advantages
 

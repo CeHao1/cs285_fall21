@@ -88,27 +88,16 @@ class MLPPolicy(BasePolicy, nn.Module, metaclass=abc.ABCMeta):
 
     # query the policy with observation(s) to get selected action(s)
     def get_action(self, obs: np.ndarray) -> np.ndarray:
-<<<<<<< HEAD
-        # TODO: get this from HW1
-=======
->>>>>>> others
         if len(obs.shape) > 1:
             observation = obs
         else:
             observation = obs[None]
-<<<<<<< HEAD
-
-        action_distribution = self(ptu.from_numpy(observation))
-        action = action_distribution.sample()
-        return  ptu.to_numpy(action)
-=======
         
         observation = ptu.from_numpy(observation)
         action_distribution = self(observation)
         action = action_distribution.sample() # don't bother with rsample
         return ptu.to_numpy(action)
 
->>>>>>> others
 
     # update/train this policy
     def update(self, observations, actions, **kwargs):
