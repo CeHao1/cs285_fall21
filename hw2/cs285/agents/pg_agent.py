@@ -44,7 +44,7 @@ class PGAgent(BaseAgent):
         q_values = self.calculate_q_vals(rewards_list)
 
         # step 2: calculate advantages that correspond to each (s_t, a_t) point
-        advantages = self.estimate_advantage(observations, q_values)
+        advantages = self.estimate_advantage(observations, rewards_list, q_values, terminals)
 
         # TODO: step 3: use all datapoints (s_t, a_t, q_t, adv_t) to update the PG actor/policy
         ## HINT: `train_log` should be returned by your actor update method
