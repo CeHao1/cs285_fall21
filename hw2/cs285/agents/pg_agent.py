@@ -162,17 +162,56 @@ class PGAgent(BaseAgent):
     ################## HELPER FUNCTIONS #################
     #####################################################
 
+    # def _discounted_return(self, rewards):
+    #     """
+    #         Helper function
+
+    #         Input: list of rewards {r_0, r_1, ..., r_t', ... r_T} from a single rollout of length T
+
+    #         Output: list where each index t contains sum_{t'=0}^T gamma^t' r_{t'}
+    #     """
+        
+    #     gam_t_r = [self.gamma**t * r for t, r in enumerate(rewards)]
+    #     list_of_discounted_returns = [sum(gam_t_r)] * len(rewards)
+    #     return list_of_discounted_returns
+
+    # def _discounted_cumsum(self, rewards):
+    #     """
+    #         Helper function which
+    #         -takes a list of rewards {r_0, r_1, ..., r_t', ... r_T},
+    #         -and returns a list where the entry in each index t' is sum_{t'=t}^T gamma^(t'-t) * r_{t'}
+    #     """
+
+    #     # TODO: create `list_of_discounted_returns`
+    #     # HINT: it is possible to write a vectorized solution, but a solution
+    #         # using a for loop is also fine
+    #     list_of_discounted_cumsums = []
+    #     T = len(rewards)
+    #     for t in range(T):
+    #         cum = [self.gamma ** (tp-t) * rewards[tp] for tp in range(t, T)]
+    #         list_of_discounted_cumsums.append(sum(cum))
+
+    #     return list_of_discounted_cumsums
+
     def _discounted_return(self, rewards):
         """
             Helper function
-
             Input: list of rewards {r_0, r_1, ..., r_t', ... r_T} from a single rollout of length T
-
             Output: list where each index t contains sum_{t'=0}^T gamma^t' r_{t'}
         """
-        
-        gam_t_r = [self.gamma**t * r for t, r in enumerate(rewards)]
-        list_of_discounted_returns = [sum(gam_t_r)] * len(rewards)
+
+        # TODO: create list_of_discounted_returns
+        # Hint: note that all entries of this output are equivalent
+            # because each sum is from 0 to T (and doesnt involve t)
+
+        T = len(rewards)
+
+        power = np.arange(0, T)
+        gammas = self.gamma ** power
+        returns = gammas * rewards
+        sum_discounted_returns = np.sum(returns)
+        list_of_discounted_returns = np.repeat(sum_discounted_returns, T)
+
         return list_of_discounted_returns
 
     def _discounted_cumsum(self, rewards):
@@ -183,12 +222,18 @@ class PGAgent(BaseAgent):
         """
 
         # TODO: create `list_of_discounted_returns`
-        # HINT: it is possible to write a vectorized solution, but a solution
+        # HINT1: note that each entry of the output should now be unique,
+            # because the summation happens over [t, T] instead of [0, T]
+        # HINT2: it is possible to write a vectorized solution, but a solution
             # using a for loop is also fine
-        list_of_discounted_cumsums = []
+
         T = len(rewards)
+
+        power = np.arange(0, T)
+        gammas = self.gamma ** power
+
+        list_of_discounted_cumsums = np.zeros(T)
         for t in range(T):
-            cum = [self.gamma ** (tp-t) * rewards[tp] for tp in range(t, T)]
-            list_of_discounted_cumsums.append(sum(cum))
+            list_of_discounted_cumsums[t] = np.sum(gammas[:T-t] * rewards[t:])
 
         return list_of_discounted_cumsums
