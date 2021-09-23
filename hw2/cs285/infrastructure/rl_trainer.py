@@ -108,7 +108,7 @@ class RL_Trainer(object):
         self.reward_store = []
 
         for itr in range(n_iter):
-            print("\n\n********** Iteration %i ************"%itr)
+            print("\n********** Iteration %i ************"%itr)
 
             # decide if videos should be rendered/logged at this iteration
             if itr % self.params['video_log_freq'] == 0 and self.params['video_log_freq'] != -1:
@@ -141,7 +141,7 @@ class RL_Trainer(object):
             # log/save
             if self.logvideo or self.logmetrics:
                 # perform logging
-                print('\nBeginning logging procedure...')
+                # print('\nBeginning logging procedure...')
                 self.perform_logging(itr, paths, eval_policy, train_video_paths, train_logs)
 
                 if self.params['save_params']:
@@ -263,10 +263,10 @@ class RL_Trainer(object):
             self.reward_store.append(logs["Eval_AverageReturn"])
 
             # perform the logging
-            for key, value in logs.items():
-                print('{} : {}'.format(key, value))
-                self.logger.log_scalar(value, key, itr)
-            print('Done logging...\n\n')
+            # for key, value in logs.items():
+            #     print('{} : {}'.format(key, value))
+            #     self.logger.log_scalar(value, key, itr)
+            # print('Done logging...\n\n')
 
             self.logger.flush()
 
