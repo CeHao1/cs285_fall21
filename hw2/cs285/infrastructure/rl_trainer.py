@@ -147,8 +147,8 @@ class RL_Trainer(object):
                 if self.params['save_params']:
                     self.agent.save('{}/agent_itr_{}.pt'.format(self.params['logdir'], itr))
 
-
-            print('reward store, ', np.round(self.reward_store, 2))
+            print('reward is, ', self.reward_store[-1])
+        print('reward store, ', np.round(self.reward_store, 2))
 
     ####################################
     ####################################
