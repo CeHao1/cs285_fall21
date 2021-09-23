@@ -157,7 +157,7 @@ class MLPPolicyPG(MLPPolicy):
             ## TODO: update the neural network baseline using the q_values as
             ## targets. The q_values should first be normalized to have a mean
             ## of zero and a standard deviation of one.
-            targets = utils.normalize(q_values, np.mean (q_values), np.std (q_values))
+            targets = normalize(q_values, np.mean (q_values), np.std (q_values))
             targets = ptu.from_numpy(targets)
 
             ## HINT1: use self.baseline_optimizer to optimize the loss used for
