@@ -164,7 +164,7 @@ class MLPPolicyPG(MLPPolicy):
                 ## updating the baseline. Remember to 'zero_grad' first
             ## HINT2: You will need to convert the targets into a tensor using
                 ## ptu.from_numpy before using it in the loss
-            baseline_predictions = self.baseline (observations)
+            baseline_predictions = torch.squeeze(self.baseline (observations))
             assert baseline_predictions.shape == targets.shape
 
             baseline_loss = self.baseline_loss(baseline_predictions, targets)
