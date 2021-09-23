@@ -105,6 +105,7 @@ class RL_Trainer(object):
         # init vars at beginning of training
         self.total_envsteps = 0
         self.start_time = time.time()
+        self.reward_store = []
 
         for itr in range(n_iter):
             print("\n\n********** Iteration %i ************"%itr)
@@ -145,6 +146,9 @@ class RL_Trainer(object):
 
                 if self.params['save_params']:
                     self.agent.save('{}/agent_itr_{}.pt'.format(self.params['logdir'], itr))
+
+
+            print('reward store, ', np.round(self.reward_store, 2))
 
     ####################################
     ####################################
@@ -255,6 +259,8 @@ class RL_Trainer(object):
             if itr == 0:
                 self.initial_return = np.mean(train_returns)
             logs["Initial_DataCollection_AverageReturn"] = self.initial_return
+
+            self.reward_store.append(logs["Eval_AverageReturn"])
 
             # perform the logging
             for key, value in logs.items():
