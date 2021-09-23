@@ -155,9 +155,9 @@ class RL_Trainer(object):
                     self.agent.save('{}/agent_itr_{}.pt'.format(self.params['logdir'], itr))
 
             # if itr%10 == 0:
-            print('reward is, ', self.reward_store[-1])
+            # print('reward is, ', self.reward_store[-1])
 
-        print('reward store, ', self.reward_store)
+            print('reward store, ', self.reward_store)
 
     ####################################
     ####################################
@@ -269,10 +269,10 @@ class RL_Trainer(object):
                 self.initial_return = np.mean(train_returns)
             logs["Initial_DataCollection_AverageReturn"] = self.initial_return
 
-            # perform the logging
-            # for key, value in logs.items():
-            #     print('{} : {}'.format(key, value))
-            #     self.logger.log_scalar(value, key, itr)
-            # print('Done logging...\n\n')
+            perform the logging
+            for key, value in logs.items():
+                print('{} : {}'.format(key, value))
+                self.logger.log_scalar(value, key, itr)
+            print('Done logging...\n\n')
 
             self.logger.flush()
