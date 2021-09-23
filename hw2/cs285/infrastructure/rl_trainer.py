@@ -97,7 +97,8 @@ class RL_Trainer(object):
 
     def run_training_loop(self, n_iter, collect_policy, eval_policy,
                           initial_expertdata=None, relabel_with_expert=False,
-                          start_relabel_with_expert=1, expert_policy=None):
+                          start_relabel_with_expert=1, expert_policy=None,
+                          print_interval=1):
         """
         :param n_iter:  number of (dagger) iterations
         :param collect_policy:
@@ -114,7 +115,7 @@ class RL_Trainer(object):
         self.reward_store = []
 
         for itr in range(n_iter):
-            if itr%10 == 0:
+            if itr%print_interval == 0:
                 print("\n********** Iteration %i ************"%itr)
 
             # decide if videos should be rendered/logged at this iteration
@@ -154,7 +155,7 @@ class RL_Trainer(object):
                 if self.params['save_params']:
                     self.agent.save('{}/agent_itr_{}.pt'.format(self.params['logdir'], itr))
 
-            if itr%10 == 0:
+            if itr%print_interval == 0:
                 print('reward is, ', self.reward_store[-1])
 
         print('reward store, ', self.reward_store)
