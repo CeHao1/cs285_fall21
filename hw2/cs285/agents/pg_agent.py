@@ -17,6 +17,7 @@ class PGAgent(BaseAgent):
         self.standardize_advantages = self.agent_params['standardize_advantages']
         self.nn_baseline = self.agent_params['nn_baseline']
         self.reward_to_go = self.agent_params['reward_to_go']
+        self.gae_lambda = self.agent_params['gae_lambda']
 
         # actor/policy
         self.actor = MLPPolicyPG(
@@ -43,7 +44,7 @@ class PGAgent(BaseAgent):
         q_values = self.calculate_q_vals(rewards_list)
 
         # step 2: calculate advantages that correspond to each (s_t, a_t) point
-        advantages = self.estimate_advantage(observations, q_values)
+        advantages = self.estimate_advantage(observations, rewards_list, q_values, terminals)
 
         # TODO: step 3: use all datapoints (s_t, a_t, q_t, adv_t) to update the PG actor/policy
         ## HINT: `train_log` should be returned by your actor update method
@@ -75,7 +76,7 @@ class PGAgent(BaseAgent):
 
         return q_values
 
-    def estimate_advantage(self, obs, q_values):
+    def estimate_advantage(self, obs, rews_list, q_values, terminals):
 
         """
             Computes advantages by (possibly) subtracting a baseline from the estimated Q values
@@ -85,14 +86,35 @@ class PGAgent(BaseAgent):
         # by querying the neural network that you're using to learn the baseline
         if self.nn_baseline:
             baselines_unnormalized = self.actor.run_baseline_prediction(obs)
-            ## ensure that the baseline and q_values have the same dimensionality
-            ## to prevent silent broadcasting errors
             assert baselines_unnormalized.ndim == q_values.ndim
-            ## baseline was trained with standardized q_values, so ensure that the predictions
-            ## have the same mean and standard deviation as the current batch of q_values
             baselines = baselines_unnormalized * np.std(q_values) + np.mean(q_values)
-            ## TODO: compute advantage estimates using q_values and baselines
-            advantages = q_values - baselines
+
+
+            if self.gae_lambda is not None:
+                ## append a dummy T+1 value for simpler recursive calculation
+                values = np.append(values, [0])
+
+                ## combine rews_list into a single array
+                rews = np.concatenate(rews_list)
+
+                ## create empty numpy array to populate with GAE advantage
+                ## estimates, with dummy T+1 value for simpler recursive calculation
+                batch_size = obs.shape[0]
+                advantages = np.zeros(batch_size + 1)
+
+                for i in reversed(range(batch_size)):
+
+                    if terminals[i] == 1:
+                        advantages[i] = 0
+                    else:
+                        delta = q_values[i] - values[i]
+                        advantages[i] = delta + self.gamma * self.gae_lambda * advantages[i+1]
+
+                # remove dummy advantage
+                advantages = advantages[:-1]
+
+            else:
+                advantages = q_values - baselines
 
         # Else, just set the advantage to [Q]
         else:
@@ -103,7 +125,7 @@ class PGAgent(BaseAgent):
             ## TODO: standardize the advantages to have a mean of zero
             ## and a standard deviation of one
             ## HINT: there is a `normalize` function in `infrastructure.utils`
-            advantages = normalize (advantages, np.mean (advantages), np.std (advantages))
+            advantages = normalize(advantages, np.mean(advantages), np.std(advantages))
 
         return advantages
 
