@@ -114,8 +114,8 @@ class RL_Trainer(object):
         self.reward_store = []
 
         for itr in range(n_iter):
-            # if itr%10 == 0:
-            print("\n********** Iteration %i ************"%itr)
+            if itr%10 == 0:
+                print("\n********** Iteration %i ************"%itr)
 
             # decide if videos should be rendered/logged at this iteration
             if itr % self.params['video_log_freq'] == 0 and self.params['video_log_freq'] != -1:
@@ -154,10 +154,10 @@ class RL_Trainer(object):
                 if self.params['save_params']:
                     self.agent.save('{}/agent_itr_{}.pt'.format(self.params['logdir'], itr))
 
-            # if itr%10 == 0:
-            # print('reward is, ', self.reward_store[-1])
+            if itr%10 == 0:
+                print('reward is, ', self.reward_store[-1])
 
-            print('reward store, ', self.reward_store)
+        print('reward store, ', self.reward_store)
 
     ####################################
     ####################################
@@ -269,9 +269,9 @@ class RL_Trainer(object):
                 self.initial_return = np.mean(train_returns)
             logs["Initial_DataCollection_AverageReturn"] = self.initial_return
 
-            for key, value in logs.items():
-                print('{} : {}'.format(key, value))
-                self.logger.log_scalar(value, key, itr)
-            print('Done logging...\n\n')
+            # for key, value in logs.items():
+            #     print('{} : {}'.format(key, value))
+            #     self.logger.log_scalar(value, key, itr)
+            # print('Done logging...\n\n')
 
             self.logger.flush()
