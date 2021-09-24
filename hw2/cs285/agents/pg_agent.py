@@ -90,7 +90,7 @@ class PGAgent(BaseAgent):
             baselines = baselines_unnormalized * np.std(q_values) + np.mean(q_values)
 
 
-            if self.gae_lambda is not None:
+            if self.gae_lambda is not None and self.gae_lambda != 1.0:
                 ## append a dummy T+1 value for simpler recursive calculation
                 print('in gae!!!')
                 values = baselines
@@ -116,7 +116,6 @@ class PGAgent(BaseAgent):
                 advantages = advantages[:-1]
 
             else:
-                print('NOT in gae!!!')
                 advantages = q_values - baselines
 
         # Else, just set the advantage to [Q]
