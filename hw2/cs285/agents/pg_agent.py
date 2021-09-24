@@ -116,6 +116,7 @@ class PGAgent(BaseAgent):
                 advantages = advantages[:-1]
 
             else:
+                print('NOT in gae!!!')
                 advantages = q_values - baselines
 
         # Else, just set the advantage to [Q]
