@@ -78,5 +78,8 @@ if __name__ == '__main__':
 
     # exp2
     exp2_f1= {'name':['q2_b150_r0.006'], 'rewards':[r.q2_b150_r006]}
-    set_plot_env(exp2_f1, 'exp2_b150_r0.006')
+    # set_plot_env(exp2_f1, 'exp2_b150_r0.006')
 
+    # exp3
+    exp3_f1 =  {'name':['q3_b40000_r0.005'], 'rewards':[r.q3]}
+    set_plot_env(exp3_f1, 'q3_b40000_r0.005')
