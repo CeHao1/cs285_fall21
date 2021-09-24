@@ -108,7 +108,7 @@ class RL_Trainer(object):
         self.reward_store = []
 
         for itr in range(n_iter):
-            print("\n\n********** Iteration %i ************"%itr)
+            print("********** Iteration %i ************"%itr)
 
             # decide if videos should be rendered/logged at this iteration
             if itr % self.params['video_log_freq'] == 0 and self.params['video_log_freq'] != -1:
@@ -141,14 +141,14 @@ class RL_Trainer(object):
             # log/save
             if self.logvideo or self.logmetrics:
                 # perform logging
-                print('\nBeginning logging procedure...')
+                # print('\nBeginning logging procedure...')
                 self.perform_logging(itr, paths, eval_policy, train_video_paths, train_logs)
 
                 if self.params['save_params']:
                     self.agent.save('{}/agent_itr_{}.pt'.format(self.params['logdir'], itr))
 
-
-            print('reward store, ', np.round(self.reward_store, 2))
+            print('reward is, ', self.reward_store[-1])
+        print('reward store, ', np.round(self.reward_store, 2))
 
     ####################################
     ####################################
@@ -165,7 +165,7 @@ class RL_Trainer(object):
         # HINT1: use sample_trajectories from utils
         # HINT2: you want each of these collected rollouts to be of length self.params['ep_len']
 
-        print("\nCollecting data to be used for training...")
+        # print("\nCollecting data to be used for training...")
         paths, envsteps_this_batch = utils.sample_trajectories(
             self.env, collect_policy, batch_size, self.params['ep_len'])
 
@@ -173,7 +173,7 @@ class RL_Trainer(object):
         # note: here, we collect MAX_NVIDEO rollouts, each of length MAX_VIDEO_LEN
         train_video_paths = None
         if self.log_video:
-            print('\nCollecting train rollouts to be used for saving videos...')
+            # print('\nCollecting train rollouts to be used for saving videos...')
             ## TODO look in utils and implement sample_n_trajectories
             train_video_paths = utils.sample_n_trajectories(
                 self.env, collect_policy, MAX_NVIDEO, MAX_VIDEO_LEN, True)
@@ -181,7 +181,7 @@ class RL_Trainer(object):
         return paths, envsteps_this_batch, train_video_paths
 
     def train_agent(self):
-        print('\nTraining agent using sampled data from replay buffer...')
+        # print('\nTraining agent using sampled data from replay buffer...')
         all_logs = []
         for train_step in range(self.params['num_agent_train_steps_per_iter']):
 
@@ -211,16 +211,16 @@ class RL_Trainer(object):
         #######################
 
         # collect eval trajectories, for logging
-        print("\nCollecting data for eval...")
+        # print("\nCollecting data for eval...")
         eval_paths, eval_envsteps_this_batch = utils.sample_trajectories(self.env, eval_policy, self.params['eval_batch_size'], self.params['ep_len'])
 
         # save eval rollouts as videos in tensorboard event file
         if self.logvideo and train_video_paths != None:
-            print('\nCollecting video rollouts eval')
+            # print('\nCollecting video rollouts eval')
             eval_video_paths = utils.sample_n_trajectories(self.env, eval_policy, MAX_NVIDEO, MAX_VIDEO_LEN, True)
 
             #save train/eval videos
-            print('\nSaving train rollouts as videos...')
+            # print('\nSaving train rollouts as videos...')
             self.logger.log_paths_as_videos(train_video_paths, itr, fps=self.fps, max_videos_to_save=MAX_NVIDEO,
                                             video_title='train_rollouts')
             self.logger.log_paths_as_videos(eval_video_paths, itr, fps=self.fps,max_videos_to_save=MAX_NVIDEO,
@@ -263,10 +263,10 @@ class RL_Trainer(object):
             self.reward_store.append(logs["Eval_AverageReturn"])
 
             # perform the logging
-            for key, value in logs.items():
-                print('{} : {}'.format(key, value))
-                self.logger.log_scalar(value, key, itr)
-            print('Done logging...\n\n')
+            # for key, value in logs.items():
+            #     print('{} : {}'.format(key, value))
+            #     self.logger.log_scalar(value, key, itr)
+            # print('Done logging...\n\n')
 
             self.logger.flush()
 
