@@ -113,6 +113,9 @@ class PGAgent(BaseAgent):
                     else:
                         advantages[i] = delta + self.gamma * self.gae_lambda * advantages[i+1]
 
+                # remove dummy advantage
+                advantages = advantages[:-1]
+
             else:
                 advantages = q_values - baselines
 
