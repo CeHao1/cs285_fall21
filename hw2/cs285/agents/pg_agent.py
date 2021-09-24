@@ -124,10 +124,11 @@ class PGAgent(BaseAgent):
                     ## HINT 2: self.gae_lambda is the lambda value in the
                         ## GAE formula
 
-                    if terminals[i] == 1:
-                        advantages[i] = 0
+                    delta = q_values[i] - values[i]
+
+                    if terminals[i] == 1: # terminal state, do not read last A
+                        advantages[i] = delta
                     else:
-                        delta = q_values[i] - values[i]
                         advantages[i] = delta + self.gamma * self.gae_lambda * advantages[i+1]
 
                 # remove dummy advantage
