@@ -92,6 +92,7 @@ class PGAgent(BaseAgent):
 
             if self.gae_lambda is not None:
                 ## append a dummy T+1 value for simpler recursive calculation
+                values = baselines
                 values = np.append(values, [0])
 
                 ## combine rews_list into a single array
