@@ -103,7 +103,7 @@ class PGAgent(BaseAgent):
             # values = ( values_unnormalized - np.mean(values_unnormalized) ) / np.std(values_unnormalized) * np.std(q_values) + np.mean(q_values)
             values = values_unnormalized * np.std(q_values) + np.mean(q_values)
 
-            if self.gae_lambda is not None:
+            if self.gae_lambda is not None and self.gae_lambda > 0.0:
                 ## append a dummy T+1 value for simpler recursive calculation
                 values = np.append(values, [0])
 
