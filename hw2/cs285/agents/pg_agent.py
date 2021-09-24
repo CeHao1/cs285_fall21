@@ -92,7 +92,7 @@ class PGAgent(BaseAgent):
 
             if self.gae_lambda is not None and self.gae_lambda > 0.0:
                 ## append a dummy T+1 value for simpler recursive calculation
-                print('in gae!!!')
+                # print('in gae!!!')
                 values = baselines
                 values = np.append(values, [0])
 
