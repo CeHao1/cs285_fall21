@@ -37,7 +37,7 @@ def set_plot_env(rewards_dict, exp_name):
     ax = plt.gca()
 
     # rewards_dist {'name':[], 'rewards]':[]}
-    color_list = ['b-.', 'r', 'y', 'b', 'r', 'y', 'b', 'r', 'y' ]
+    color_list = ['b', 'r', 'y', 'g', 'm', 'k']
     for idx, name in enumerate(rewards_dict['name']):
         plot_reward(ax, rewards_dict['rewards'][idx], name, color=color_list[idx])
 
