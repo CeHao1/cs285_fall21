@@ -90,7 +90,7 @@ class PGAgent(BaseAgent):
             baselines = baselines_unnormalized * np.std(q_values) + np.mean(q_values)
 
 
-            if self.gae_lambda is not None and self.gae_lambda > 0.0:
+            if self.gae_lambda is not None and self.gae_lambda >= 0.0:
                 ## append a dummy T+1 value for simpler recursive calculation
                 # print('in gae!!!')
                 values = baselines
@@ -105,12 +105,6 @@ class PGAgent(BaseAgent):
                 advantages = np.zeros(batch_size + 1)
 
                 for i in reversed(range(batch_size)):
-
-                    # delta = q_values[i] - values[i]
-                    # if terminals[i] == 1: 
-                    #     advantages[i] = delta
-                    # else:
-                    #     advantages[i] = delta + self.gamma * self.gae_lambda * advantages[i+1]
                     if terminals[i] == 1:
                         continue
                     advantages[i] = rews[i] + self.gamma*( (1.0 - self.gae_lambda) * values[i] + self.gae_lambda * advantages[i+1] )
