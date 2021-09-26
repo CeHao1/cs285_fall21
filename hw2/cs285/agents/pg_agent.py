@@ -106,12 +106,14 @@ class PGAgent(BaseAgent):
 
                 for i in reversed(range(batch_size)):
 
-                    delta = q_values[i] - values[i]
-
-                    if terminals[i] == 1: # terminal state, do not read last A
-                        advantages[i] = delta
-                    else:
-                        advantages[i] = delta + self.gamma * self.gae_lambda * advantages[i+1]
+                    # delta = q_values[i] - values[i]
+                    # if terminals[i] == 1: 
+                    #     advantages[i] = delta
+                    # else:
+                    #     advantages[i] = delta + self.gamma * self.gae_lambda * advantages[i+1]
+                    if terminals[i] == 1:
+                        continue
+                    advantages[i] = rews[i] + self.gamma*( (1.0 - self.gae_lambda) * values[i] + self.gae_lambda * advantages[i+1] )
 
                 # remove dummy advantage
                 advantages = advantages[:-1]
