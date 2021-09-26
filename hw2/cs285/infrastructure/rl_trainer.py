@@ -264,7 +264,7 @@ class RL_Trainer(object):
 
             perform the logging
             for key, value in logs.items():
-            #     print('{} : {}'.format(key, value))
+                print('{} : {}'.format(key, value))
                 self.logger.log_scalar(value, key, itr)
             # print('Done logging...\n\n')
 
