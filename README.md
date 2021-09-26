@@ -23,3 +23,7 @@ https://colab.research.google.com/drive/135fzWzVf4IULsr68RUoShV-ZDTzXKvbp?usp=sh
 
 auto click in colab  
 https://blog.csdn.net/bornfree5511/article/details/106980379  
+
+
+install mujoco:  
+https://blog.csdn.net/weixin_44420419/article/details/116231500
