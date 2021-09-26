@@ -262,10 +262,10 @@ class RL_Trainer(object):
 
             self.reward_store.append(logs["Eval_AverageReturn"])
 
-            # perform the logging
+            perform the logging
             # for key, value in logs.items():
             #     print('{} : {}'.format(key, value))
-            #     self.logger.log_scalar(value, key, itr)
+                self.logger.log_scalar(value, key, itr)
             # print('Done logging...\n\n')
 
             self.logger.flush()
