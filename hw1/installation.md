@@ -1,4 +1,20 @@
 ## Install mujoco:
+
+```
+apt-get update  
+apt-get install -y wget  
+apt-get install unzip zip
+
+pip install lockfile
+apt install libosmesa6-dev
+apt-get install patchelf
+apt-get install swig
+```
+
+debug to install mujoco  
+https://www.codenong.com/cs109406774/  
+https://blog.csdn.net/weixin_44420419/article/details/116231500  
+
 ```
 mkdir ~/.mujoco
 cd ~/.mujoco
