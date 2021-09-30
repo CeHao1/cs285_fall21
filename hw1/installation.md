@@ -6,6 +6,9 @@ apt-get install -y wget
 apt-get install unzip zip
 ```
 
+debug to install mujoco  
+https://blog.csdn.net/weixin_44420419/article/details/116231500  
+
 ```
 mkdir ~/.mujoco
 cd ~/.mujoco
