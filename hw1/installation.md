@@ -1,4 +1,11 @@
 ## Install mujoco:
+
+```
+apt-get update  
+apt-get install -y wget  
+apt-get install unzip zip
+```
+
 ```
 mkdir ~/.mujoco
 cd ~/.mujoco
