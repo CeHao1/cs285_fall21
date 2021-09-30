@@ -14,6 +14,9 @@ apt-get install swig
 debug to install mujoco  
 https://www.codenong.com/cs109406774/  
 https://blog.csdn.net/weixin_44420419/article/details/116231500  
+install atari  
+https://blog.csdn.net/m0_37738114/article/details/117586476
+
 
 ```
 mkdir ~/.mujoco
