@@ -243,7 +243,7 @@ class RL_Trainer(object):
 
     ####################################
     ####################################
-    def perform_dqn_logging(self, all_logs):
+    def perform_dqn_logging(self, all_logs): 
         last_log = all_logs[-1]
 
         episode_rewards = get_wrapper_by_name(self.env, "Monitor").get_episode_rewards()
