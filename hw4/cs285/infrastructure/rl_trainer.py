@@ -36,6 +36,7 @@ class RL_Trainer(object):
         # Get params, create logger
         self.params = params
         self.logger = Logger(self.params['logdir'])
+        self.log_video = None
 
         # Set random seeds
         seed = self.params['seed']
