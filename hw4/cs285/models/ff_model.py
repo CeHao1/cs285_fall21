@@ -4,7 +4,7 @@ from torch import optim
 from cs285.models.base_model import BaseModel
 from cs285.infrastructure.utils import normalize, unnormalize
 from cs285.infrastructure import pytorch_util as ptu
-
+import numpy as np
 
 class FFModel(nn.Module, BaseModel):
 
