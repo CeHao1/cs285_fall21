@@ -159,6 +159,26 @@ class FFModel(nn.Module, BaseModel):
         # `data_statistics['delta_std']`, which keep track of the mean
         # and standard deviation of the model.
 
+        self.update_statistics (
+            data_statistics['obs_mean'],
+            data_statistics['obs_std'],
+            data_statistics['acs_mean'],
+            data_statistics['acs_std'],
+            data_statistics['delta_mean'],
+            data_statistics['delta_std']
+            )
+        # print (type(observations))
+        _, output = self.forward (
+            ptu.from_numpy(observations), 
+            ptu.from_numpy(actions),
+            self.obs_mean,
+            self.obs_std,
+            self.acs_mean,
+            self.acs_std,
+            self.delta_mean,
+            self.delta_std
+            )
+
         loss = self.loss (target, output) # TODO(Q1) compute the loss
         # Hint: `self(...)` returns a tuple, but you only need to use one of the
         # outputs.
