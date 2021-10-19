@@ -78,15 +78,19 @@ class MPCPolicy(BasePolicy):
                 else:
                     evaluated_reward = self.evaluate_candidate_sequences(action_sequences, obs)
                     sort_seq = evaluated_reward.argsort()
-                    Ai = action_sequences[sort_seq]
+                    # Ai = action_sequences[sort_seq]
 
-                    A_elites = Ai[-self.cem_num_elites :]
+                    # A_elites = Ai[-self.cem_num_elites :]
+                    elitis_seq = sort_seq[-self.cem_num_elites :]
+                    A_elites = action_sequences[elitis_seq]
+                    
                     mu = self.cem_alpha * np.mean(A_elites, axis=0) + (1 - self.cem_alpha) * mu
-                    sigma = self.cem_alpha * np.var(A_elites, axis=0) + (1 - self.cem_alpha) * mu
+                    sigma = self.cem_alpha * np.std(A_elites, axis=0) + (1 - self.cem_alpha) * mu
 
                     action_sequences = np.random.normal(mu, sigma, size=(num_sequences, horizon, self.ac_dim))
 
-
+                    # max_rewards = evaluated_reward[sort_seq][-self.cem_num_elites :]
+                    # print("iter: {}, sum max rewards: {}".format(i, sum(max_rewards)))
 
 
             cem_action = action_sequences
