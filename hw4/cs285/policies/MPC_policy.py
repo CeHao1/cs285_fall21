@@ -59,10 +59,9 @@ class MPCPolicy(BasePolicy):
             # TODO(Q5): Implement action selection using CEM.
             # Begin with randomly selected actions, then refine the sampling distribution
             # iteratively as described in Section 3.3, "Iterative Random-Shooting with Refinement" of
-            # https://arxiv.org/pdf/1909.11652.pdf 
-
+            # https://arxiv.org/pdf/1909.11652.pdf
             for i in range(self.cem_iterations):
-                # - Sample candidate sequences from a Gaussian with the current 
+                # - Sample candidate sequences from a Gaussian with the current
                 #   elite mean and variance
                 #     (Hint: remember that for the first iteration, we instead sample
                 #      uniformly at random just like we do for random-shooting)
@@ -96,7 +95,8 @@ class MPCPolicy(BasePolicy):
             cem_action = action_sequences
             return cem_action
 
-            # TODO(Q5): Set `cem_action` to the appropriate action chosen by CEM
+            # TODO(Q5): Set `cem_action` to the appropriate action sequence chosen by CEM.
+            # The shape should be (horizon, self.ac_dim)
             # cem_action = None
 
             # return cem_action[None]
@@ -174,7 +174,7 @@ class MPCPolicy(BasePolicy):
         # states for each dynamics model in your ensemble.
         # Once you have a sequence of predicted states from each model in
         # your ensemble, calculate the sum of rewards for each sequence
-        # using `self.env.get_reward(predicted_obs)`
+        # using `self.env.get_reward(predicted_obs, action)` at each step.
         # You should sum across `self.horizon` time step.
         # Hint: you should use model.get_prediction and you shouldn't need
         #       to import pytorch in this file.
