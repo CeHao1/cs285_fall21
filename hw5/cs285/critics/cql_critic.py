@@ -78,8 +78,14 @@ class CQLCritic(BaseCritic):
         # CQL Implementation
         # TODO: Implement CQL as described in the pdf and paper
         # Hint: After calculating cql_loss, augment the loss appropriately
-        cql_loss = None
-        q_t_logsumexp = None
+        
+        q_t_logsumexp = qa_t_values.logsumexp(dim=1)
+        cql_loss = (q_t_logsumexp - q_t_values).mean()
+        loss = loss + self.cql_alpha * cql_loss
+
+        self.optimizer.zero_grad()
+        loss.backward()
+        self.optimizer.step()
 
         info = {'Training Loss': ptu.to_numpy(loss)}
 
