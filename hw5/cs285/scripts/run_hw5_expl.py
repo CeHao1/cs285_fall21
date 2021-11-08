@@ -56,6 +56,11 @@ def main():
     parser.add_argument('--num_exploration_steps', type=int, default=10000)
     parser.add_argument('--unsupervised_exploration', action='store_true')
 
+    parser.add_argument('--use_cbe', action='store_true',
+                        help='use count-based exploration')
+    parser.add_argument('--cbe_coefficient', type=float, default=1.0,
+                        help='count-based exploration coefficient')
+
     parser.add_argument('--offline_exploitation', action='store_true')
     parser.add_argument('--cql_alpha', type=float, default=0.0)
 
@@ -99,7 +104,7 @@ def main():
     if params['env_name']=='PointmassVeryHard-v0':
         params['ep_len']=200
     
-    if params['use_rnd']:
+    if params['use_rnd'] or params['use_cbe']:
         params['explore_weight_schedule'] = PiecewiseSchedule([(0,1), (params['num_exploration_steps'], 0)], outside_value=0.0)
     else:
         params['explore_weight_schedule'] = ConstantSchedule(0.0)
@@ -108,7 +113,7 @@ def main():
         params['explore_weight_schedule'] = ConstantSchedule(1.0)
         params['exploit_weight_schedule'] = ConstantSchedule(0.0)
         
-        if not params['use_rnd']:
+        if not params['use_rnd'] or params['use_cbe']:
             params['learning_starts'] = params['num_exploration_steps']
     
 
