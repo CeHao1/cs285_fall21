@@ -56,31 +56,38 @@ class AWACAgent(DQNAgent):
 
     def estimate_advantage(self, ob_no, ac_na, re_n, next_ob_no, terminal_n, n_actions=10):
         # TODO convert to torch tensors
-        ob_no = ptu.from_numpy(ob_no)
-        ac_na = ptu.from_numpy(ac_na).to(torch.long)
-        re_n = ptu.from_numpy(re_n)
-        next_ob_no = ptu.from_numpy(next_ob_no)
-        terminal_n = ptu.from_numpy(terminal_n)
+        # ob_no = ptu.from_numpy(ob_no)
+        # ac_na = ptu.from_numpy(ac_na).to(torch.long)
+        # re_n = ptu.from_numpy(re_n)
+        # next_ob_no = ptu.from_numpy(next_ob_no)
+        # terminal_n = ptu.from_numpy(terminal_n)
 
         v_n = self.get_qvals(self.exploration_critic, ob_no, ac_na)
         next_v_n = self.get_qvals(self.exploration_critic, next_ob_no, ac_na)
 
-        assert v_n.shape == next_v_n.shape == re_n.shape == terminal_n.shape
+        # assert v_n.shape == next_v_n.shape == re_n.shape == terminal_n.shape
 
         vals = []
+        terminal_n_dim = []
         # TODO Calculate Value Function Estimate given current observation
         # You may find it helpful to utilze get_qvals defined above
         # dist = None
-        # if self.agent_params['discrete']:
-        #     for i in range(self.agent_params['ac_dim']):
-        #         pass
-        # else:
-        #     for _ in range(n_actions):
-        #         pass
-        # v_pi = None
+        if self.agent_params['discrete']:
+            for i in range(self.agent_params['ac_dim']):
+                vals.append(re_n)
+                terminal_n_dim.append(terminal_n)
+        else:
+            for _ in range(n_actions):
+                vals.append(re_n)
+                terminal_n_dim.append(terminal_n)
+        v_pi = np.array(vals).T
+        terminal_n_dim = np.array(terminal_n_dim).T        
 
         # TODO Calculate Q-Values
-        q_vals = re_n + self.exploration_critic.gamma * next_v_n * (1 - terminal_n)
+        # print(' v_pi ', v_pi.shape)
+        # print(' next_v_n ', next_v_n.shape)
+        # print(' terminal_n_dim ', terminal_n_dim.shape)
+        q_vals = v_pi + self.exploration_critic.gamma * next_v_n * (1 - terminal_n_dim)
         
         # TODO Calculate the Advantage      
         adv_n = q_vals - v_n
@@ -132,7 +139,7 @@ class AWACAgent(DQNAgent):
             # TODO: update actor
             # 1): Estimate the advantage
             # 2): Calculate the awac actor loss
-            adv_n = self.estimate_advantage(self, ob_no, ac_na, re_n, next_ob_no, terminal_n)
+            adv_n = self.estimate_advantage(ob_no, ac_na, re_n, next_ob_no, terminal_n)
             actor_loss = self.eval_policy.update(ob_no, ac_na, adv_n)
 
             # TODO: Update Target Networks #
